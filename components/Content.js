@@ -54,6 +54,20 @@ export default function Content1() {
     params: {},
   });
 
+  const { runContractFunction: playing } = useWeb3Contract({
+    abi: abi,
+    contractAddress: conaddrs,
+    functionName: "playing",
+    params: {},
+  });
+
+  const { runContractFunction: getBalance } = useWeb3Contract({
+    abi: abi,
+    contractAddress: conaddrs,
+    functionName: "getBalance",
+    params: {},
+  });
+
   const { runContractFunction: enterRaffle } = useWeb3Contract({
     abi: abi,
     contractAddress: conaddrs,
@@ -96,7 +110,7 @@ export default function Content1() {
                 onError: (error) => alert(error),
               });
               setShowusernumber(true);
-              console.log(showusernumber);
+              // console.log(showusernumber);
             } else {
               setUsernumber("Error");
             }
@@ -112,7 +126,7 @@ export default function Content1() {
         </p>
       </label>
       {/* </button> */}
-      {/* <Button
+      <Button
         id="test-button"
         onClick={async () => {
           const res = (
@@ -125,7 +139,7 @@ export default function Content1() {
         text="User Number"
         theme="outline"
         type="button"
-      /> */}
+      />
 
       <p>{`User Number: ${
         showusernumber && (usernumber === "Error" ? "" : usernumber)
@@ -134,18 +148,56 @@ export default function Content1() {
       <Button
         id="test-button"
         onClick={async () => {
-          const res = await getrandnum({
-            onError: (error) => console.log(error),
-          });
-          console.log(res.toString());
-          setshowRandomNumber(true);
-          setRandomNumber(res.toString());
+          const res = await playing();
         }}
-        text="Get randomnum"
+        text="Playing"
         theme="outline"
         type="button"
-        disabled={showusernumber === false || showusernumber === "Error"}
+        // disabled={showusernumber === false || showusernumber === "Error"}
       />
+      <Button
+        id="test-button"
+        onClick={async () => {
+          const res = await getrandnum();
+          console.log(res.toString());
+        }}
+        text="Get Random number"
+        theme="outline"
+        type="button"
+        // disabled={showusernumber === false || showusernumber === "Error"}
+      />
+      <Button
+        id="test-button"
+        onClick={async () => {
+          const res = await getwinnerOrNot({
+            onError: (error) => {
+              console.log(error);
+            },
+          });
+          console.log(res.toString());
+        }}
+        text="Get winner or not"
+        theme="outline"
+        type="button"
+        // disabled={showusernumber === false || showusernumber === "Error"}
+      />
+      <Button
+        id="test-button"
+        onClick={async () => {
+          const res = await getBalance({
+            onError: (error) => {
+              console.log(error);
+            },
+          });
+          console.log(ethers.utils.formatUnits(res.toString(), "ether"));
+        }}
+        text="Get Contract Balance"
+        theme="outline"
+        type="button"
+        // disabled={showusernumber === false || showusernumber === "Error"}
+      />
+      {/* 9999.9651 */}
+
       <p>
         {showRandomNumber && (rnadomNumber === undefined ? "" : rnadomNumber)}
       </p>
